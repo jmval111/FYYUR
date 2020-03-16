@@ -44,7 +44,6 @@ class Venue(db.Model):
     currently_seeking_talent = db.Column(db.Boolean)
     currently_seeking_talent_description = db.Column(db.String)
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
