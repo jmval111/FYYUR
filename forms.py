@@ -133,7 +133,7 @@ class VenueForm(Form):
     )
     website = StringField(
         'website', validators=[URL()]
-    )^
+    )
     seeking_talent = BooleanField(
         'seeking_talent'
     )
