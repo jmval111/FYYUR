@@ -168,8 +168,8 @@ def show_venue(venue_id):
     "website": venue.website,
     "facebook_link": venue.facebook_link,
     "seeking_talent": venue.seeking_talent,
-    "seeking_description": venue.seeking_description
-    "image_link": venue.image_link
+    "seeking_description": venue.seeking_description,
+    "image_link": venue.image_link,
     "past_shows": past_shows,
     "upcoming_shows": upcoming_shows,
     "past_shows_count": len(past_shows),
@@ -227,8 +227,7 @@ def delete_venue(venue_id):
     db.session.rollback()
   finally:
     db.session.close()
-  return:
-    jsonify({ 'success': True })
+  return jsonify({ 'success': True })
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
   return None
@@ -303,8 +302,8 @@ def show_artist(artist_id):
     "website": venue.website,
     "facebook_link": venue.facebook_link,
     "seeking_talent": venue.seeking_talent,
-    "seeking_description": venue.seeking_description
-    "image_link": venue.image_link
+    "seeking_description": venue.seeking_description,
+    "image_link": venue.image_link,
     "past_shows": past_shows,
     "upcoming_shows": upcoming_shows,
     "past_shows_count": len(past_shows),
