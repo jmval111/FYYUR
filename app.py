@@ -447,7 +447,7 @@ def create_artist_submission():
       flash('Artist ' + request.form['name'] + ' was successfully listed!')
       db.session.close()
     else:
-      flash('An error occurred. Artist ' + artist.name + ' could not be created.')
+      flash('An error occurred. Artist could not be created.')
       db.session.close()
   return render_template('pages/home.html')
 
