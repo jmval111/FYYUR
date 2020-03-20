@@ -442,7 +442,7 @@ def create_artist_submission():
     
   finally:
     # on successful db insert, flash success
-    if error == False:
+    if error:
       flash('Artist ' + request.form['name'] + ' was successfully listed!')
       db.session.close()
     else:
