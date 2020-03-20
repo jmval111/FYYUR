@@ -117,13 +117,13 @@ def venues():
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
   search_term = request.form.get('search_term', '')
-  search_result = Venue.query().filter(Venue.name.ilike(f'%{search_term}%')).all()
+  search_result = db.session.query(Venue).filter(Venue.name.ilike(f'%{search_term}%')).all()
   data = []
   for hit in search_result:
     data.append({
       "id": hit.id,
       "name": hit.name,
-      "num_upcoming_shows": len(Shows.query.join(Venue).filter(Show.venue_id==hit.id).filter(Show.start_time > datetime.now()).all())
+      "num_upcoming_shows": len(Show.query.join(Venue).filter(Show.venue_id==hit.id).filter(Show.start_time > datetime.now()).all())
     })
 
   response={
@@ -151,8 +151,8 @@ def show_venue(venue_id):
   past_shows = []
   for show in past_shows_query:
     past_shows.append({
-    "artist_id": show.artist_id,
-    "artist_name": show.artist_name,
+    "artist_id": show.artist.id,
+    "artist_name": show.artist.name,
     "artist_image_link": show.artist.image_link,
     "start_time": show.start_time
   })
@@ -250,13 +250,13 @@ def artists():
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
   search_term = request.form.get('search_term', '')
-  search_result = Artist.query().filter(Artist.name.ilike(f'%{search_term}%')).all()
+  search_result = db.session.query(Artist).filter(Artist.name.ilike(f'%{search_term}%')).all()
   data = []
   for hit in search_result:
     data.append({
       "id": hit.id,
       "name": hit.name,
-      "num_upcoming_shows": len(Shows.query.join(Venue).filter(Show.artist_id==hit.id).filter(Show.start_time > datetime.now()).all())
+      "num_upcoming_shows": len(Show.query.join(Venue).filter(Show.artist_id==hit.id).filter(Show.start_time > datetime.now()).all())
     })
 
   response={
@@ -269,7 +269,7 @@ def search_artists():
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   # TODO: replace with real venue data from the venues table, using venue_id
-  artist = Artist.query.get(artist_id)
+  artist_query = Artist.query.get(artist_id)
   
   upcoming_shows_query = Show.query.join(Venue).filter(Show.artist_id==artist_id).filter(Show.start_time > datetime.now()).all()
   upcoming_shows = []
@@ -285,25 +285,24 @@ def show_artist(artist_id):
   past_shows = []
   for show in past_shows_query:
     past_shows.append({
-    "venue_id": show.venue_id,
-    "venue_name": show.venue_name,
+    "venue_id": show.venue.id,
+    "venue_name": show.venue.name,
     "venue_image_link": show.venue.image_link,
     "start_time": show.start_time
   })
 
   data = {
-    "id": venue.id,
-    "name": venue.name,
-    "genres": venue.genres,
-    "address": venue.address,
-    "city": venue.city,
-    "state": venue.state,
-    "phone": venue.phone,
-    "website": venue.website,
-    "facebook_link": venue.facebook_link,
-    "seeking_talent": venue.seeking_talent,
-    "seeking_description": venue.seeking_description,
-    "image_link": venue.image_link,
+    "id": artist_query.id,
+    "name": artist_query.name,
+    "genres": artist_query.genres,
+    "city": artist_query.city,
+    "state": artist_query.state,
+    "phone": artist_query.phone,
+    "website": artist_query.website,
+    "facebook_link": artist_query.facebook_link,
+    "seeking_talent": artist_query.seeking_venue,
+    "seeking_description": artist_query.seeking_description,
+    "image_link": artist_query.image_link,
     "past_shows": past_shows,
     "upcoming_shows": upcoming_shows,
     "past_shows_count": len(past_shows),
