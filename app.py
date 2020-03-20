@@ -137,7 +137,7 @@ def search_venues():
 def show_venue(venue_id):
   venue = Venue.query.get(venue_id)
   
-  upcoming_shows_query = Shows.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time > datetime.now()).all()
+  upcoming_shows_query = Show.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time > datetime.now()).all()
   upcoming_shows = []
   for show in upcoming_shows_query:
     upcoming_shows.append({
@@ -147,7 +147,7 @@ def show_venue(venue_id):
     "start_time": show.start_time
   })
 
-  past_shows_query = Shows.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time < datetime.now()).all()
+  past_shows_query = Show.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time < datetime.now()).all()
   past_shows = []
   for show in past_shows_query:
     past_shows.append({
@@ -271,7 +271,7 @@ def show_artist(artist_id):
   # TODO: replace with real venue data from the venues table, using venue_id
   artist = Artist.query.get(artist_id)
   
-  upcoming_shows_query = Shows.query.join(Venue).filter(Show.artist_id==artist_id).filter(Show.start_time > datetime.now()).all()
+  upcoming_shows_query = Show.query.join(Venue).filter(Show.artist_id==artist_id).filter(Show.start_time > datetime.now()).all()
   upcoming_shows = []
   for show in upcoming_shows_query:
     upcoming_shows.append({
@@ -281,7 +281,7 @@ def show_artist(artist_id):
     "start_time": show.start_time
   })
 
-  past_shows_query = Shows.query.join(Venue).filter(Show.venue_id==artist_id).filter(Show.start_time < datetime.now()).all()
+  past_shows_query = Show.query.join(Venue).filter(Show.venue_id==artist_id).filter(Show.start_time < datetime.now()).all()
   past_shows = []
   for show in past_shows_query:
     past_shows.append({
