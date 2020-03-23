@@ -101,7 +101,7 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
-  venue_query = Venue.query.all()
+  venue_query = Venue.query.group_by(Venue.id, Venue.state, Venue.city).all()
   data = []
   for venue in venue_query:
     data.append({
@@ -230,7 +230,6 @@ def delete_venue(venue_id):
   return jsonify({ 'success': True })
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
-  return None
 
 #  Artists
 #  ----------------------------------------------------------------
@@ -278,7 +277,7 @@ def show_artist(artist_id):
     "venue_id": show.venue_id,
     "venue_name": show.venue_name,
     "venue_image_link": show.venue.image_link,
-    "start_time": show.start_time
+    "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
   })
 
   past_shows_query = Show.query.join(Venue).filter(Show.venue_id==artist_id).filter(Show.start_time < datetime.now()).all()
@@ -288,7 +287,7 @@ def show_artist(artist_id):
     "venue_id": show.venue.id,
     "venue_name": show.venue.name,
     "venue_image_link": show.venue.image_link,
-    "start_time": show.start_time
+    "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
   })
 
   data = {
